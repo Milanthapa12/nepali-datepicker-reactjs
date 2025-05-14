@@ -29,6 +29,7 @@ class Calendar extends Component {
 		maxDate: '',
 		defaultDate: '',
 		hideDefaultValue: false,
+		value: null
 	};
 
 	state = {
@@ -55,8 +56,12 @@ class Calendar extends Component {
 			language === 'NE'
 				? convertFullDateToNepali(currentYear + '-' + currentMonth + '-' + currentDay)
 				: getFullEnglishDate(currentYear + '-' + currentMonth + '-' + currentDay);
-		if (this.validateDate(this.props.defaultDate)) {
-			const splittedDate = this.props.defaultDate.split('-');
+
+		// if value is passed, take value otherwise defaultDate		
+		const initialData = this.props.value || this.props.defaultDate;
+
+		if (this.validateDate(initialData)) {
+			const splittedDate = initialData.split('-');
 			const year = parseInt(splittedDate[0]);
 			const month = parseInt(splittedDate[1]);
 			const day = parseInt(splittedDate[2]);
@@ -95,6 +100,29 @@ class Calendar extends Component {
 		document.addEventListener('mousedown', this.handleClickOutside);
 	}
 
+	// Update the calendar when value prop changes
+	componentDidUpdate(prevProps) {
+		if (this.props.value !== prevProps.value && this.validateDate(this.props.value)) {
+			const splittedDate = this.props.value.split('-');
+			const year = parseInt(splittedDate[0]);
+			const month = parseInt(splittedDate[1]);
+			const day = parseInt(splittedDate[2]);
+
+			if (year >= 2000 && year <= 2099 && month >= 1 && month <= 12) {
+				this.setState({
+					currentYear: year,
+					currentMonth: month,
+					currentDay: day,
+				}, () => {
+					this.formatDate(
+						this.state.language === 'NE'
+							? convertFullDateToNepali(year + '-' + month + '-' + day)
+							: getFullEnglishDate(year + '-' + month + '-' + day)
+					);
+				});
+			}
+		}
+	}
 	componentWillUnmount() {
 		document.removeEventListener('mousedown', this.handleClickOutside);
 	}
