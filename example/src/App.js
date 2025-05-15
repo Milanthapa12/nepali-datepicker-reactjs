@@ -16,11 +16,12 @@ class App extends React.Component {
 		return (
 			<div style={{ marginLeft: 100 }}>
 				<Calendar
-					value="2082-01-02"
+					value={undefined}
 					onChange={this.onChange}
 					language='ne'
 					theme='default'
 					dateFormat='DDDD, MMMM DD, YYYY'
+					placeholder="mm/dd/yyyy"
 					minDate='2077-12-10'
 					maxDate='2077-12-30'
 					defaultDate='2077-12-12'

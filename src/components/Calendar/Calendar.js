@@ -29,7 +29,7 @@ class Calendar extends Component {
 		maxDate: '',
 		defaultDate: '',
 		hideDefaultValue: false,
-		value: null
+		value: null,
 	};
 
 	state = {
@@ -43,6 +43,7 @@ class Calendar extends Component {
 		language: 'NE',
 		theme: 'default',
 		hideDefaultValue: this.props.hideDefaultValue,
+		isValueNull: false,
 	};
 
 	wrapperRef = React.createRef();
@@ -57,10 +58,14 @@ class Calendar extends Component {
 				? convertFullDateToNepali(currentYear + '-' + currentMonth + '-' + currentDay)
 				: getFullEnglishDate(currentYear + '-' + currentMonth + '-' + currentDay);
 
-		// if value is passed, take value otherwise defaultDate		
-		const initialData = this.props.value || this.props.defaultDate;
 
-		if (this.validateDate(initialData)) {
+		// check value is null 
+		const isValueNull = this.props.value === null || this.props.value === '';
+		// if value is passed, take value otherwise defaultDate
+		const initialData =
+			this.props.value === isValueNull ? null : this.props.value || this.props.defaultDate;
+	
+		if (initialData && this.validateDate(initialData)) {
 			const splittedDate = initialData.split('-');
 			const year = parseInt(splittedDate[0]);
 			const month = parseInt(splittedDate[1]);
@@ -79,47 +84,69 @@ class Calendar extends Component {
 				today,
 				language,
 				theme,
+				selectedDate: initialData || '',
+				isValueNull
 			},
 			() => {
-				if (this.state.hideDefaultValue)
-					this.formatDate(
-						language === 'NE'
-							? convertFullDateToNepali(currentYear + '-' + currentMonth + '-' + currentDay)
-							: getFullEnglishDate(currentYear + '-' + currentMonth + '-' + currentDay)
-					);
-				else
-					this.props.onChange(
-						this.formatDate(
-							language === 'NE'
-								? convertFullDateToNepali(currentYear + '-' + currentMonth + '-' + currentDay)
-								: getFullEnglishDate(currentYear + '-' + currentMonth + '-' + currentDay)
-						)
-					);
+				      if (initialData && !isValueNull) {
+                    this.props.onChange(
+                        this.formatDate(
+                            language === 'NE'
+                                ? convertFullDateToNepali(currentYear + '-' + currentMonth + '-' + currentDay)
+                                : getFullEnglishDate(currentYear + '-' + currentMonth + '-' + currentDay)
+                        )
+                    );
+                }
+				// if (this.state.hideDefaultValue)
+				// 	this.formatDate(
+				// 		language === 'NE'
+				// 			? convertFullDateToNepali(currentYear + '-' + currentMonth + '-' + currentDay)
+				// 			: getFullEnglishDate(currentYear + '-' + currentMonth + '-' + currentDay)
+				// 	);
+				// else
+				// 	this.props.onChange(
+				// 		this.formatDate(
+				// 			language === 'NE'
+				// 				? convertFullDateToNepali(currentYear + '-' + currentMonth + '-' + currentDay)
+				// 				: getFullEnglishDate(currentYear + '-' + currentMonth + '-' + currentDay)
+				// 		)
+				// 	);
 			}
 		);
 		document.addEventListener('mousedown', this.handleClickOutside);
 	}
 
-	// Update the calendar when value prop changes
+	// Update the calendar when value prop value changes
 	componentDidUpdate(prevProps) {
-		if (this.props.value !== prevProps.value && this.validateDate(this.props.value)) {
-			const splittedDate = this.props.value.split('-');
-			const year = parseInt(splittedDate[0]);
-			const month = parseInt(splittedDate[1]);
-			const day = parseInt(splittedDate[2]);
-
-			if (year >= 2000 && year <= 2099 && month >= 1 && month <= 12) {
+		if (this.props.value !== prevProps.value) {
+			if (this.props.value === null) {
 				this.setState({
-					currentYear: year,
-					currentMonth: month,
-					currentDay: day,
-				}, () => {
-					this.formatDate(
-						this.state.language === 'NE'
-							? convertFullDateToNepali(year + '-' + month + '-' + day)
-							: getFullEnglishDate(year + '-' + month + '-' + day)
-					);
+					selectedDate: '',
+					formatDate: '',
+					isValueNull: true
 				});
+			} else if (this.validateDate(this.props.value)) {
+				const splittedDate = this.props.value.split('-');
+				const year = parseInt(splittedDate[0]);
+				const month = parseInt(splittedDate[1]);
+				const day = parseInt(splittedDate[2]);
+
+				if (year >= 2000 && year <= 2099 && month >= 1 && month <= 12) {
+					this.setState(
+						{
+							currentYear: year,
+							currentMonth: month,
+							currentDay: day,
+						},
+						() => {
+							this.formatDate(
+								this.state.language === 'NE'
+									? convertFullDateToNepali(year + '-' + month + '-' + day)
+									: getFullEnglishDate(year + '-' + month + '-' + day)
+							);
+						}
+					);
+				}
 			}
 		}
 	}
@@ -284,10 +311,10 @@ class Calendar extends Component {
 				this.state.language === 'NE'
 					? convertFullDateToNepali(
 							this.state.currentYear + '-' + this.state.currentMonth + '-' + englishNumber
-					  )
+						)
 					: getFullEnglishDate(
 							this.state.currentYear + '-' + this.state.currentMonth + '-' + englishNumber
-					  )
+						)
 			)
 		);
 	};
@@ -412,8 +439,16 @@ class Calendar extends Component {
 		// everything ok
 		return true;
 	};
+	
 
 	render() {
+			const placeholder = this.props.dateFormat 
+            ? this.props.dateFormat
+                .replace('YYYY', 'yyyy')
+                .replace('MM', 'mm')
+                .replace('DD', 'dd')
+                .toLowerCase()
+            : 'yyyy/mm/dd';
 		return (
 			<div style={{ position: 'relative' }}>
 				<div
