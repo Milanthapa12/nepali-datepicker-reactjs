@@ -14,11 +14,14 @@ class App extends React.Component {
 	};
 	render() {
 		return (
-			<div style={{ marginLeft: 100 }}>
+			<div style={{ marginLeft: 100, display: "flex", gap: "12px", marginTop: "10px"}}>
+				{/* <div>
+					<input type="date" name="en_date" />
+				</div> */}
 				<Calendar
 					value={undefined}
 					onChange={this.onChange}
-					language='en'
+					language='np'
 					theme='default'
 					dateFormat='DDDD, MMMM DD, YYYY'
 					placeholder="mm/dd/yyyy"

@@ -8,3 +8,8 @@ Modifications © [Milan Thapa].
 - Added value prop support
 - empty value accepted
 
+## [1.0.3] - 2025-05-30
+### Changed
+- calendar width reduced
+- days font size reduced
+
