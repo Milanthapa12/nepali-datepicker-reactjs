@@ -16,15 +16,16 @@ class App extends React.Component {
 		return (
 			<div style={{ marginLeft: 100 }}>
 				<Calendar
+			
 					value={undefined}
 					onChange={this.onChange}
-					language='ne'
+					language='en'
 					theme='default'
 					dateFormat='DDDD, MMMM DD, YYYY'
 					placeholder="mm/dd/yyyy"
-					minDate='2077-12-10'
-					maxDate='2077-12-30'
-					defaultDate='2077-12-12'
+					// minDate='2082-01-01'
+					// maxDate='2077-12-30'
+					// defaultDate='2082-01-01'
 				/>
 			</div>
 		);

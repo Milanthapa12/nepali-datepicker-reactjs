@@ -14,7 +14,7 @@
 }
 
 .react-calendar__input {
-	font-size: 16px;
+	font-size: 14px;
 	line-height: 1.5;
 }
 .react-calendar__days {
@@ -291,3 +291,41 @@ Theme White:
 }
 
 /* default theme ends */
+
+/* by Bibek */
+.react-calendar {
+  /* Keep your existing styles */
+  max-width: 300px;
+  box-shadow: 5px 3px 12px 0px rgba(16, 36, 94, 0.2);
+  position: absolute;
+  background-color: #fff;
+  z-index: 1000 !important;
+  font-size: 14px;
+  line-height: 1.35;
+  color: #000;
+  min-width: 300px; /* Match max-width to prevent shrinking */
+  display: flex;
+  flex-direction: column;
+}
+.react-calendar__days {
+    display: flex;
+    text-align: center;
+    background-color: #fff;
+}
+.react-calendar__dates {
+  justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #fff;
+  flex: 1; /* Take all available space */
+  min-height: 210px;
+}
+.react-calendar__body {
+  flex: 1 0 auto;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
