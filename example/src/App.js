@@ -16,7 +16,6 @@ class App extends React.Component {
 		return (
 			<div style={{ marginLeft: 100 }}>
 				<Calendar
-			
 					value={undefined}
 					onChange={this.onChange}
 					language='en'
