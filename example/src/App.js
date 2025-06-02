@@ -25,9 +25,9 @@ class App extends React.Component {
 					theme='default'
 					dateFormat='DDDD, MMMM DD, YYYY'
 					placeholder="mm/dd/yyyy"
-					// minDate='2082-01-01'
+					// minDate='2083-01-01'
 					// maxDate='2077-12-30'
-					// defaultDate='2082-01-01'
+					defaultDate='2084-01-01'
 				/>
 			</div>
 		);

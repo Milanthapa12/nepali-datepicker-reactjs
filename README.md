@@ -13,3 +13,7 @@ Modifications © [Milan Thapa].
 - calendar width reduced
 - days font size reduced
 
+## [1.0.4] - 2025-05-30
+### Changed
+- total number of days in a month from year 2083 - 2086 updated/fixed
+
